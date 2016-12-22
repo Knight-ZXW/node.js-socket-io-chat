@@ -1,0 +1,19 @@
+{
+  "name": "node.js-socket-io-chat",
+  "version": "0.0.1",
+  "description": "node.js socket-io 实现聊天室",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nimdanoob/node.js-socket-io-chat.git"
+  },
+  "author": "zous",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nimdanoob/node.js-socket-io-chat/issues"
+  },
+  "homepage": "https://github.com/nimdanoob/node.js-socket-io-chat#readme"
+}
