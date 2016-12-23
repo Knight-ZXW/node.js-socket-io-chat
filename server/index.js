@@ -7,7 +7,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
 var onlineUsers = {};
-
+//当前在线人数
+var onlineCount = 0;
 io.on('connection', function (socket) {
     //test ?一个用户 创建一个 socket
     console.log('a user connected');
@@ -17,16 +18,18 @@ io.on('connection', function (socket) {
 
         if (!onlineUsers.hasOwnProperty(obj.userid)) {
             onlineUsers[obj.userid] = obj.username;
-            //add online user
+            onlineCount++;
         }
-        io.emit('loginSuccess', {onlineUsers: onlineUsers, user: obj});
+        io.emit('loginSuccess', {onlineUsers: onlineUsers, user: obj,onlineCount:onlineCount});
         console.log(obj.username + '加入了聊天室');
     });
 
     socket.on('disconnect', function () {
         if (onlineUsers.hasOwnProperty(socket.name)) {
+            var obj = {userid: socket.name, username: onlineUsers[socket.name]};
             delete onlineUsers[socket.name];
-            io.emit('logout', {onlineUsers: onlineUsers, user: obj});
+            onlineCount--;
+            io.emit('logout', {onlineUsers: onlineUsers, user: obj,onlineCount:onlineCount});
             console.log(obj.username + '退出了聊天室')
         }
     });
@@ -37,9 +40,9 @@ io.on('connection', function (socket) {
     });
 
 });
-app.use('/static',express.static('static'));
+app.use('/static', express.static('static'));
 app.get('/', function (req, res) {
-    res.sendFile(path.resolve(__dirname+'/index.html'));
+    res.sendFile(path.resolve(__dirname + '/index.html'));
 });
 
 http.listen('3000', function () {

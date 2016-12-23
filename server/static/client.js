@@ -45,9 +45,9 @@
         },
         updateSysMsg: function (o, action) { //更新系统消息，比如有新的用户进入聊天室，或者用户退出
             var onlineUsers = o.onlineUsers;
-            var onlineCount = onlineUsers.length;
-            var user = o.user;
 
+            var onlineCount = o.onlineCount;
+            var user = o.user;
             //更新在线人数
             var userhtml = '';
             var separator = '';
@@ -59,7 +59,7 @@
                 }
             }
 
-            d.getElementById("onlinecount").innerHTML = '当前共有' + onlineUsers.length + '人在线，在线列表' + userhtml;
+            d.getElementById("onlinecount").innerHTML = '当前共有' + onlineCount + '人在线，在线列表' + userhtml;
             //添加系统信息
             var html = '';
             html += '<div class ="msg-system">';
@@ -109,7 +109,7 @@
                 var usernameDiv = '<span>' + obj.username + '</span>';
 
                 var section = d.createElement('section');
-                if (isme){
+                if (isme) {
                     section.className = 'user';
                     section.innerHTML = contentDiv + usernameDiv;
                 } else {
