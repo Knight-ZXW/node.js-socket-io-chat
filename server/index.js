@@ -1,9 +1,11 @@
 /**
  * Created by nimdanoob on 2016/12/22.
  */
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var path = require('path');
 var onlineUsers = {};
 
 io.on('connection', function (socket) {
@@ -13,16 +15,16 @@ io.on('connection', function (socket) {
     socket.on('login', function (obj) {
         socket.name = obj.userid;
 
-        if (!onlineUsers.includes(obj.userid)) {
+        if (!onlineUsers.hasOwnProperty(obj.userid)) {
             onlineUsers[obj.userid] = obj.username;
             //add online user
         }
-        io.emit('login', {onlineUsers: onlineUsers, user: obj});
+        io.emit('loginSuccess', {onlineUsers: onlineUsers, user: obj});
         console.log(obj.username + '加入了聊天室');
     });
 
     socket.on('disconnect', function () {
-        if (onlineUsers.includes(socket.name)) {
+        if (onlineUsers.hasOwnProperty(socket.name)) {
             delete onlineUsers[socket.name];
             io.emit('logout', {onlineUsers: onlineUsers, user: obj});
             console.log(obj.username + '退出了聊天室')
@@ -34,6 +36,10 @@ io.on('connection', function (socket) {
         console.log(obj.username + '说: ' + obj.content);
     });
 
+});
+app.use('/static',express.static('static'));
+app.get('/', function (req, res) {
+    res.sendFile(path.resolve(__dirname+'/index.html'));
 });
 
 http.listen('3000', function () {

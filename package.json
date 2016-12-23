@@ -4,7 +4,7 @@
   "description": "node.js socket-io 实现聊天室",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "node server/index.js"
   },
   "repository": {
     "type": "git",
